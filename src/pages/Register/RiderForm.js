@@ -1,26 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useHistory } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-
-const FormStyled = styled.form`
-  display: flex;
-  flex-wrap: wrap;
-  label {
-    font-size: 1rem;
-    margin-bottom: 5px;
-  }
-  input,
-  select {
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    margin-bottom: 15px;
-  }
-`;
+import FormStyled from '../../styledComponents/FormStyled';
 
 export default function RiderForm() {
   // router history

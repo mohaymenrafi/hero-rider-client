@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   signOut,
   updateProfile,
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
 import axios from 'axios';
 import authInit from '../firebase/firebase.init';
@@ -52,6 +53,16 @@ const useFirebase = () => {
   };
 
   // here login user code will go.
+  const emailLogIn = (email, password, location, history) => {
+    setIsLoading(true);
+    signInWithEmailAndPassword(auth, email, password, location)
+      .then((userCredential) => {
+        const uri = location?.state?.from || '/my-account';
+        history.push(uri);
+      })
+      .catch((err) => console.warn(err.message))
+      .finally(() => setIsLoading(false));
+  };
 
   useEffect(() => {
     const unsubscribed = onAuthStateChanged(auth, (successUser) => {
@@ -81,6 +92,7 @@ const useFirebase = () => {
     logOut,
     isLoading,
     user,
+    emailLogIn,
   };
 };
 
