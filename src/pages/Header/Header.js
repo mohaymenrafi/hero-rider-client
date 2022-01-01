@@ -32,9 +32,6 @@ export default function Header() {
           <Link to="/my-account" className="ml-4">
             My Account
           </Link>
-          <Link to="/contact" className="ml-4">
-            Contact
-          </Link>
           {user?.email && (
             <button type="button" onClick={logOut} className="ml-4">
               Logout

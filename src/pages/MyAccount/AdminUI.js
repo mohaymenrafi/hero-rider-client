@@ -11,8 +11,10 @@ export default function AdminUI() {
   const [monitorUser, setMonitorUser] = useState(true);
   const [pageCount, setPageCount] = useState(0);
   const [pageIndex, setPageIndex] = useState(0);
+  const [processing, setProcessing] = useState(false);
+  const [totalUser, setTotalUser] = useState(0);
+  // const [blockList, setBlockList] = useState([]);
   const { isLoading, removeUser } = useAuth();
-  let url = `http://localhost:5000/users`;
   const handleFilter = (e) => {
     setFilters({
       ...filters,
@@ -20,27 +22,33 @@ export default function AdminUI() {
     });
     setMonitorUser(!monitorUser);
   };
-  const size = 2;
-  url = `http://localhost:5000/users?pageIndex=${pageIndex}&size=${size}?${
-    filters.email ? `email=${filters.email}&` : ''
-  }${filters.phone ? `phone=${filters.phone}&` : ''}${
-    filters.fullName ? `fullName=${filters.fullName}&` : ''
-  }${filters.age ? `age=${filters.age}&` : ''}`;
-  /* eslint-disable react-hooks/exhaustive-deps */
+  const size = 10;
+  const baseurl = `http://localhost:5000/users?pageIndex=${pageIndex}&size=${size}`;
+
+  const fullUrl = `${baseurl}&${Object.keys(filters)
+    .filter((key) => !!filters[key])
+    .map((key) => `${key}=${filters[key]}`)
+    .join('&')}`;
+  console.log(fullUrl);
+
   useEffect(() => {
-    axios.get(url).then((res) => {
+    setProcessing(true);
+    axios.get(fullUrl).then((res) => {
       setUser(res.data.userFilter);
-      console.log(res.data.userFilter);
+      // setBlockList(res.data.userFilter);
       const { count } = res.data;
-      setPageCount(Math.ceil((count - 1) / size));
+      setTotalUser(count);
+      setPageCount(Math.ceil(count / size));
+      setProcessing(false);
     });
   }, [monitorUser, pageIndex]);
-  // useEffect(() => {
-  //   axios.get(`http://localhost:5000/users`).then((res) => {
-  //     setUser(res.data.userFilter);
-  //     console.log(res.data.userFilter);
-  //   });
-  // }, [pageIndex]);
+
+  // blockList.forEach((item) => (item.isBlocked = false));
+  // // console.log(blockList);
+  const handleCheckbox = (e) => {
+    console.log(e.currentTarget);
+  };
+
   if (isLoading) return <Loader />;
   return (
     <div className="container mx-auto py-16 grid grid-cols-1 md:grid-cols-8 gap-12">
@@ -85,6 +93,12 @@ export default function AdminUI() {
                 50+
               </label>
             </div>
+            <div>
+              <input type="radio" name="age" id="all" value="all" />
+              <label className="ml-2" htmlFor="all">
+                All
+              </label>
+            </div>
           </div>
         </FormStyled>
       </div>
@@ -119,9 +133,21 @@ export default function AdminUI() {
                     >
                       Role
                     </th>
-                    <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Block</span>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Vehicle Type
                     </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Block
+                    </th>
+                    {/* <th scope="col" className="relative px-6 py-3">
+                      <span className="sr-only">Block</span>
+                    </th> */}
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -162,23 +188,34 @@ export default function AdminUI() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {person.userRole}
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
+                        {person.vehicleType}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
                           type="button"
                           className="text-indigo-600 hover:text-indigo-900"
                         >
-                          Block
+                          {' '}
+                          Select
+                          <input
+                            type="checkbox"
+                            className="ml-4"
+                            onClick={handleCheckbox}
+                          />
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              {processing && <Loader />}
               <Pagination
                 pageCount={pageCount}
                 users={users}
                 setPageIndex={setPageIndex}
                 pageIndex={pageIndex}
+                totalUser={totalUser}
               />
             </div>
           </div>

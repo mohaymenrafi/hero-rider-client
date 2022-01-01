@@ -78,7 +78,7 @@ export default function RiderForm() {
           {...register('profileImage')}
         />
         <h3 className="block w-full my-3 font-medium text-lg">
-          Car Information
+          Vehicle Information
         </h3>
         <label htmlFor="brandName">Brand Name</label>
         <input
