@@ -6,6 +6,7 @@ import {
   signOut,
   updateProfile,
   signInWithEmailAndPassword,
+  deleteUser,
 } from 'firebase/auth';
 import axios from 'axios';
 import authInit from '../firebase/firebase.init';
@@ -79,6 +80,16 @@ const useFirebase = () => {
     return () => unsubscribed;
   }, []);
 
+  // delete firebase user as admin
+  const removeUser = (id) => {
+    getAuth()
+      .deleteUser(id)
+      .then(() => {
+        console.log('delete successfully');
+      })
+      .catch((err) => console.warn(err.message));
+  };
+
   const logOut = () => {
     setIsLoading(true);
     signOut(auth)
@@ -103,6 +114,7 @@ const useFirebase = () => {
     user,
     emailLogIn,
     admin,
+    removeUser,
   };
 };
 

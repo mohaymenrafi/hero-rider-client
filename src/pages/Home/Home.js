@@ -1,5 +1,6 @@
 import Banner from './Banner/Banner';
 import HowItWorks from './HowItWorks/HowItWorks';
+import Packages from './Packages/Packages';
 import Services from './Services/Services';
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <Banner />
       <HowItWorks />
       <Services />
+      <Packages />
     </>
   );
 }

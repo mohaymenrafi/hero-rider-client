@@ -23,6 +23,9 @@ const FormStyled = styled.form`
     background-color: #22c55e;
     cursor: pointer;
   }
+  input[type='radio'] {
+    width: auto;
+  }
 `;
 
 export default FormStyled;

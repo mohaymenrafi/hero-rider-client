@@ -1,9 +1,10 @@
 import { Redirect, Route } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import Loader from '../pages/Message/Loader';
 /* eslint-disable react/prop-types */
 export default function PrivateRoute({ children, ...rest }) {
   const { user, isLoading } = useAuth();
-  if (isLoading) return <h2>Loading ...</h2>;
+  if (isLoading) return <Loader />;
   return (
     <Route
       {...rest}

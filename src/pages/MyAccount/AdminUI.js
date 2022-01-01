@@ -1,27 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
-import useUsers from '../../hooks/useUsers';
 import FormStyled from '../../styledComponents/FormStyled';
-import UserCard from './UserCard';
-
-const people = [
-  {
-    name: 'Jane Cooper',
-    title: 'Regional Paradigm Technician',
-    department: 'Optimization',
-    role: 'Admin',
-    email: 'jane.cooper@example.com',
-    image:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-  // More people...?email=${}&phone=${}&fullName=${}
-];
+import Loader from '../Message/Loader';
+import Pagination from './Pagination';
 
 export default function AdminUI() {
   const [users, setUser] = useState();
   const [filters, setFilters] = useState({});
   const [monitorUser, setMonitorUser] = useState(true);
+  const [pageCount, setPageCount] = useState(0);
+  const [pageIndex, setPageIndex] = useState(0);
+  const { isLoading, removeUser } = useAuth();
   let url = `http://localhost:5000/users`;
   const handleFilter = (e) => {
     setFilters({
@@ -30,19 +20,28 @@ export default function AdminUI() {
     });
     setMonitorUser(!monitorUser);
   };
-  url = `http://localhost:5000/users?${
+  const size = 2;
+  url = `http://localhost:5000/users?pageIndex=${pageIndex}&size=${size}?${
     filters.email ? `email=${filters.email}&` : ''
   }${filters.phone ? `phone=${filters.phone}&` : ''}${
     filters.fullName ? `fullName=${filters.fullName}&` : ''
-  }`;
+  }${filters.age ? `age=${filters.age}&` : ''}`;
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     axios.get(url).then((res) => {
-      setUser(res.data);
+      setUser(res.data.userFilter);
+      console.log(res.data.userFilter);
+      const { count } = res.data;
+      setPageCount(Math.ceil((count - 1) / size));
     });
-  }, [monitorUser]);
-  const { isLoading } = useAuth();
-  if (isLoading) return <h2>Loading...................</h2>;
-  //   if (users.length === 0) return <h2>No result Found</h2>;
+  }, [monitorUser, pageIndex]);
+  // useEffect(() => {
+  //   axios.get(`http://localhost:5000/users`).then((res) => {
+  //     setUser(res.data.userFilter);
+  //     console.log(res.data.userFilter);
+  //   });
+  // }, [pageIndex]);
+  if (isLoading) return <Loader />;
   return (
     <div className="container mx-auto py-16 grid grid-cols-1 md:grid-cols-8 gap-12">
       <div className="md:col-span-2">
@@ -59,6 +58,33 @@ export default function AdminUI() {
           <div>
             <label htmlFor="fullName">Fiter By Name</label>
             <input name="fullName" type="text" onChange={handleFilter} />
+          </div>
+          <div onChange={handleFilter}>
+            <h4 className="mb-2">Filter By Age</h4>
+            <div>
+              <input type="radio" name="age" id="1" value="30" />
+              <label className="ml-2" htmlFor="1">
+                18-30
+              </label>
+            </div>
+            <div>
+              <input type="radio" name="age" id="2" value="40" />
+              <label className="ml-2" htmlFor="2">
+                31-40
+              </label>
+            </div>
+            <div>
+              <input type="radio" name="age" id="3" value="50" />
+              <label className="ml-2" htmlFor="3">
+                41-50
+              </label>
+            </div>
+            <div>
+              <input type="radio" name="age" id="4" value="51" />
+              <label className="ml-2" htmlFor="4">
+                50+
+              </label>
+            </div>
           </div>
         </FormStyled>
       </div>
@@ -137,17 +163,23 @@ export default function AdminUI() {
                         {person.userRole}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
+                        <button
+                          type="button"
                           className="text-indigo-600 hover:text-indigo-900"
                         >
                           Block
-                        </a>
+                        </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <Pagination
+                pageCount={pageCount}
+                users={users}
+                setPageIndex={setPageIndex}
+                pageIndex={pageIndex}
+              />
             </div>
           </div>
         </div>

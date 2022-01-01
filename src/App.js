@@ -7,6 +7,7 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import MyAccount from './pages/MyAccount/MyAccount';
 import NotFound from './pages/NotFound/NotFound';
+import Payment from './pages/Payment/Payment';
 import Register from './pages/Register/Register';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 
@@ -22,6 +23,9 @@ function App() {
           <Route path="/contact" component={Contact} />
           <PrivateRoute path="/my-account">
             <MyAccount />
+          </PrivateRoute>
+          <PrivateRoute path="/purchase/:id">
+            <Payment />
           </PrivateRoute>
           <Route path="*" component={NotFound} />
         </Switch>
