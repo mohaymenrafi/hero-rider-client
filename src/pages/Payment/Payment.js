@@ -15,7 +15,7 @@ export default function Payment() {
     axios
       .get(`http://localhost:5000/courses/${id}`)
       .then((res) => setCourse(res.data));
-  }, []);
+  });
   //   console.log(course);
   if (course.length === 0) return <Loader />;
   return (
