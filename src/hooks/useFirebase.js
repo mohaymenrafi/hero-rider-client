@@ -11,12 +11,14 @@ import axios from 'axios';
 import authInit from '../firebase/firebase.init';
 
 // Initializing firebase
+/* eslint-disable react-hooks/exhaustive-deps  */
+/* eslint-disable no-unused-vars  */
 authInit();
 
 const useFirebase = () => {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  // const [admin, setAdmin] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   const auth = getAuth();
 
@@ -87,12 +89,20 @@ const useFirebase = () => {
       .finally(() => setIsLoading(false));
   };
 
+  // check admin status
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/users/${user.email}`)
+      .then((res) => setAdmin(res.data.admin));
+  }, [user?.email]);
+
   return {
     emailRegister,
     logOut,
     isLoading,
     user,
     emailLogIn,
+    admin,
   };
 };
 

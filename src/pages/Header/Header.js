@@ -18,11 +18,18 @@ export default function Header() {
           <Link exact to="/" className="ml-4">
             Home
           </Link>
-          <Link to="/login" className="ml-4">
-            Login
-          </Link>
-          <Link to="/register" className="ml-4">
-            Register
+          {!user?.email && (
+            <Link to="/login" className="ml-4">
+              Login
+            </Link>
+          )}
+          {!user?.email && (
+            <Link to="/register" className="ml-4">
+              Register
+            </Link>
+          )}
+          <Link to="/my-account" className="ml-4">
+            My Account
           </Link>
           <Link to="/contact" className="ml-4">
             Contact

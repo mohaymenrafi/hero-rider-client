@@ -8,6 +8,7 @@ import Login from './pages/Login/Login';
 import MyAccount from './pages/MyAccount/MyAccount';
 import NotFound from './pages/NotFound/NotFound';
 import Register from './pages/Register/Register';
+import PrivateRoute from './PrivateRoute/PrivateRoute';
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/contact" component={Contact} />
-          <Route path="/my-account" component={MyAccount} />
+          <PrivateRoute path="/my-account">
+            <MyAccount />
+          </PrivateRoute>
           <Route path="*" component={NotFound} />
         </Switch>
         <Footer />
