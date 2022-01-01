@@ -26,7 +26,7 @@ const useFirebase = () => {
   // post user to db
   const saveUser = (userInfo) => {
     axios
-      .post('http://localhost:5000/users', userInfo)
+      .post('https://stark-depths-06330.herokuapp.com/users', userInfo)
       .then((res) => console.log(res.data));
   };
 
@@ -103,7 +103,7 @@ const useFirebase = () => {
   // check admin status
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/users/${user.email}`)
+      .get(`https://stark-depths-06330.herokuapp.com/users/${user.email}`)
       .then((res) => setAdmin(res.data.admin));
   }, [user?.email]);
 

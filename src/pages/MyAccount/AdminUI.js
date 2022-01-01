@@ -23,7 +23,7 @@ export default function AdminUI() {
     setMonitorUser(!monitorUser);
   };
   const size = 10;
-  const baseurl = `http://localhost:5000/users?pageIndex=${pageIndex}&size=${size}`;
+  const baseurl = `https://stark-depths-06330.herokuapp.com/users?pageIndex=${pageIndex}&size=${size}`;
 
   const fullUrl = `${baseurl}&${Object.keys(filters)
     .filter((key) => !!filters[key])

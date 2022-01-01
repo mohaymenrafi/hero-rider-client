@@ -5,7 +5,7 @@ const useCourses = () => {
   const [courses, setCourses] = useState([]);
   useEffect(() => {
     axios
-      .get('http://localhost:5000/courses')
+      .get('https://stark-depths-06330.herokuapp.com/courses')
       .then((res) => setCourses(res.data));
   }, []);
   return [courses];

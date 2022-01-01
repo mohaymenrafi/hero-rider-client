@@ -5,7 +5,7 @@ export default function useUsers() {
   const [users, setUser] = useState();
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/users/?name=rafi`)
+      .get(`https://stark-depths-06330.herokuapp.com/users/?name=rafi`)
       .then((res) => setUser(res.data));
   }, []);
   return [users, setUser];

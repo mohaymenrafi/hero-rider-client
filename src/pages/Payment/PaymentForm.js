@@ -19,7 +19,7 @@ export default function PaymentForm({ price, name }) {
 
   useEffect(() => {
     axios
-      .post('http://localhost:5000/create-payment-intent', { price })
+      .post('https://stark-depths-06330.herokuapp.com/create-payment-intent', { price })
       .then((res) => {
         setClientSecret(res.data.clientSecret);
       });
@@ -74,7 +74,7 @@ export default function PaymentForm({ price, name }) {
         currency: paymentIntent.currency,
         time: paymentIntent.created,
       };
-      axios.post('http://localhost:5000/orders', orderInfo).then((res) => {
+      axios.post('https://stark-depths-06330.herokuapp.com/orders', orderInfo).then((res) => {
         console.log(res.data);
         alert('You have successfully placed your order.');
       });

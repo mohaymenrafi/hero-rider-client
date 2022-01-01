@@ -8,7 +8,7 @@ export default function UserUI() {
   const [myOrders, setMyOrders] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/orders?email=${user?.email}`)
+      .get(`https://stark-depths-06330.herokuapp.com/orders?email=${user?.email}`)
       .then((res) => {
         console.log(res.data);
         setMyOrders(res.data);

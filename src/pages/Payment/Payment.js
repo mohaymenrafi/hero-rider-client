@@ -13,7 +13,7 @@ export default function Payment() {
   const [course, setCourse] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/courses/${id}`)
+      .get(`https://stark-depths-06330.herokuapp.com/courses/${id}`)
       .then((res) => setCourse(res.data));
   });
   //   console.log(course);
