@@ -19,7 +19,9 @@ export default function PaymentForm({ price, name }) {
 
   useEffect(() => {
     axios
-      .post('https://stark-depths-06330.herokuapp.com/create-payment-intent', { price })
+      .post('https://stark-depths-06330.herokuapp.com/create-payment-intent', {
+        price,
+      })
       .then((res) => {
         setClientSecret(res.data.clientSecret);
       });
@@ -74,10 +76,12 @@ export default function PaymentForm({ price, name }) {
         currency: paymentIntent.currency,
         time: paymentIntent.created,
       };
-      axios.post('https://stark-depths-06330.herokuapp.com/orders', orderInfo).then((res) => {
-        console.log(res.data);
-        alert('You have successfully placed your order.');
-      });
+      axios
+        .post('https://stark-depths-06330.herokuapp.com/orders', orderInfo)
+        .then((res) => {
+          console.log(res.data);
+          alert('You have successfully placed your order.');
+        });
     }
   };
   return (
@@ -98,17 +102,13 @@ export default function PaymentForm({ price, name }) {
           },
         }}
       />
-      {processing ? (
-        <Loader />
-      ) : (
-        <button
-          type="submit"
-          disabled={!stripe}
-          className="text-xl bg-green-300 hover:bg-green-600 hover:text-white px-8 py-2 rounded"
-        >
-          Pay
-        </button>
-      )}
+      <button
+        type="submit"
+        disabled={!stripe}
+        className="text-xl bg-green-300 hover:bg-green-600 hover:text-white px-8 py-2 rounded"
+      >
+        Pay
+      </button>
       {error && <ErrorMessage err={error} />}
       {success && <SuccesMessage success={success} />}
       {/* <Loader /> */}
